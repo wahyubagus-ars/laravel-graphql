@@ -1,21 +1,34 @@
+#
+#type Query {
+#    user(
+#        id: ID @eq @rules(apply: ["prohibits:email", "required_without:email"])
+#        email: String @eq @rules(apply: ["prohibits:id", "required_without:id", "email"])
+#    ): User @find
+#
+#    users(
+#        name: String @where(operator: "like")
+#    ): [User!]! @paginate(defaultCount: 10)
+#}
+#
+#type User {
+#    id: ID!
+#    name: String!
+#    email: String!
+#    created_at: DateTime!
+#    updated_at: DateTime!
+#}
 
 scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
+scalar Date @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date")
 
 type Query {
-    user(
-        id: ID @eq @rules(apply: ["prohibits:email", "required_without:email"])
-        email: String @eq @rules(apply: ["prohibits:id", "required_without:id", "email"])
-    ): User @find
-
-    users(
-        name: String @where(operator: "like")
-    ): [User!]! @paginate(defaultCount: 10)
+    users: [User] @paginate,
+    user (id: ID @eq): User! @find
 }
 
 type User {
-    id: ID!
+    id: ID
     name: String!
-    email: String!
     created_at: DateTime!
-    updated_at: DateTime!
+    updated_at: Date!
 }
